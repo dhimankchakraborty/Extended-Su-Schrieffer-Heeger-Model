@@ -55,17 +55,48 @@ def generate_hamiltonian(N, v, w, p, q):
 
 
 
-def dispersion_relation(k, v, w):
-    res = np.sqrt(np.square(v) + np.square(w) + 2 * v * w * np.cos(k))
+def dispersion_relation(k, v, w, p, q):
+    res = np.sqrt(np.square(d_x(k, v, w, p, q)) + np.square(d_y(k, w, p, q)))
 
     return res
 
 
 
-def d_x(k, v, w):
-    return v + w * np.cos(k)
+def d_x(k, v, w, p, q):
+    return v + w * np.cos(k) + p * np.cos(k) + q * np.cos(2 * k)
 
 
 
-def d_y(k, w):
-    return w * np.sin(k)
+def d_y(k, w, p, q):
+    return w * np.sin(k) + p * np.sin(k) + q * np.sin(2 * k)
+
+
+
+def d_k_d_x(k, w, p, q):
+    return -1 * (w * np.sin(k) + p * np.sin(k) + 2 * q * np.sin(2 * k))
+
+
+
+def d_k_d_y(k, w, p, q):
+    return w * np.cos(k) + p * np.cos(k) + 2 * q * np.cos(2 * k)
+
+
+
+def winding_number_integrand(k, v, w, p, q):
+
+    return ((d_x(k, v, w, p, q) * d_k_d_y(k, w, p, q) - d_y(k, w, p, q) * d_k_d_x(k, w, p, q)) / (np.square(d_x(k, v, w, p, q)) + np.square(d_y(k, w, p, q))))
+
+
+
+def winding_number(v, w, p, q, steps=10000):
+
+    k_arr = np.linspace(-1 * np.pi, np.pi, steps)
+    dk = k_arr[1] - k_arr[0]
+
+    res = 0
+    for k in k_arr:
+        res += winding_number_integrand(k, v, w, p, q)
+    
+    return res * dk / (2 * np.pi)
+
+

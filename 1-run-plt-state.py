@@ -6,25 +6,47 @@ from functions import *
 
 
 
-N = 10
+N = 40
 
-total_site = N * 2
+total_sites = N * 2
 v = 1
-w = 2
-p = 3
-q = 4
+w = 0.1
+p = 0.5
+q = 2
 
 
 hamiltonian = generate_hamiltonian(N, v, w, p, q)
 
-print(hamiltonian)
+# print(sp.linalg.ishermitian(hamiltonian))
+
+e_val, e_vec = np.linalg.eigh(hamiltonian)
+
+# for i, e in enumerate(e_val):
+#     print(i, e)
+
+mid_up_idx = total_sites // 2
+# topo_state_idx_arr = np.array([mid_up_idx, mid_up_idx - 1, mid_up_idx - 2, mid_up_idx + 1])
+topo_state_idx_arr = np.array([mid_up_idx, mid_up_idx - 1])
 
 
-# H = create_hamiltonian_matrix(N, v, w, p, q)
 
-# print(H)
+for idx, i in enumerate(topo_state_idx_arr):
+    plt.subplot(2, 2, idx + 1)
+    plt.plot(np.arange(1, total_sites + 1), e_vec[:, i], marker='x', color='k')
+    plt.title(f'Wave function vs Site Index for Energy: {np.round(e_val[i], 7)}')
+    plt.grid()
+    plt.xlabel('Site Index')
+    plt.ylabel('Wave Function')
 
-# k = 0
 
-for k in range(total_site):
-    print(k, hopping_sites(k, total_site))
+for idx, i in enumerate(topo_state_idx_arr):
+    plt.subplot(2, 2, 3 + idx)
+    plt.plot(np.arange(1, total_sites + 1), e_vec[:, i]**2, marker='x', color='k')
+    plt.title(f'Probability Density vs Site Index for Energy: {np.round(e_val[i], 7)}')
+    plt.grid()
+    plt.xlabel('Site Index')
+    plt.ylabel('Probability Density')
+# plt.suptitle(f'Wave Function and Probability Density at Sites \nNo. of unit cells (N): {N}, Intra-cell Hopping Constant (v): {v} & Inter-cell Hopping Constant (w): {w}')
+plt.suptitle(f'Wave Function and Probability Density at Sites \nN: {N}, v: {v}, w: {w}, p: {p} & q: {q}\n Winding Number: {np.round(winding_number(v, w, p, q), 3)}')
+plt.subplots_adjust(hspace=0.4)
+plt.show()
