@@ -6,14 +6,14 @@ from functions import *
 
 
 
-p = 0.1
+p = 0
 v = 1
-q = 0
+q = 1
 N = 5
 total_sites = 2 * N
 
-w_start = 5
-w_end = -5
+w_start = 2
+w_end = -2
 w_count = 1001
 w_arr = np.round(np.linspace(w_start, w_end, w_count), 4)
 
@@ -38,9 +38,9 @@ topo_state_idx_arr = np.array([mid_up_idx, mid_up_idx - 1])
 
 # plt.subplot(2, 2, 1)
 for i in range(dim):
-    plt.plot((q - w_arr) / 2, e_val_arr[i])
+    plt.plot((p - w_arr) / 2, e_val_arr[i])
 plt.grid()
 plt.ylabel(r"Energy ($E$)")
-plt.xlabel(r"$\Delta_{q-w}$")
+plt.xlabel(r"$\Delta_{p-w}$")
 # plt.title(fr'Inter-Cell Hopping Constant ($w$): {w}')
 plt.show()

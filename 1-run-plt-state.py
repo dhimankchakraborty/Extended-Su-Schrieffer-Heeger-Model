@@ -9,10 +9,10 @@ from functions import *
 N = 40
 
 total_sites = N * 2
-v = 1
-w = 0.1
-p = 0.5
-q = 2
+v = 0.1
+w = 1
+p = 1
+q = 0
 
 
 hamiltonian = generate_hamiltonian(N, v, w, p, q)

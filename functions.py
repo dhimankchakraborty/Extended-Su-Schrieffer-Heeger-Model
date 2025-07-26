@@ -1,5 +1,6 @@
 import numpy as np
 import scipy as sp
+from numba import njit, prange
 
 
 
@@ -62,41 +63,48 @@ def dispersion_relation(k, v, w, p, q):
 
 
 
+@njit
 def d_x(k, v, w, p, q):
     return v + w * np.cos(k) + p * np.cos(k) + q * np.cos(2 * k)
 
 
 
+@njit
 def d_y(k, w, p, q):
     return w * np.sin(k) + p * np.sin(k) + q * np.sin(2 * k)
 
 
 
+@njit
 def d_k_d_x(k, w, p, q):
     return -1 * (w * np.sin(k) + p * np.sin(k) + 2 * q * np.sin(2 * k))
 
 
 
+@njit
 def d_k_d_y(k, w, p, q):
     return w * np.cos(k) + p * np.cos(k) + 2 * q * np.cos(2 * k)
 
 
 
+@njit
 def winding_number_integrand(k, v, w, p, q):
 
     return ((d_x(k, v, w, p, q) * d_k_d_y(k, w, p, q) - d_y(k, w, p, q) * d_k_d_x(k, w, p, q)) / (np.square(d_x(k, v, w, p, q)) + np.square(d_y(k, w, p, q))))
 
 
 
-def winding_number(v, w, p, q, steps=10000):
+@njit(parallel=True)
+def winding_number(v, w, p, q, steps=10000, rounding_place=3):
 
     k_arr = np.linspace(-1 * np.pi, np.pi, steps)
     dk = k_arr[1] - k_arr[0]
 
     res = 0
-    for k in k_arr:
-        res += winding_number_integrand(k, v, w, p, q)
+    for i in prange(len(k_arr)):
+        res += winding_number_integrand(k_arr[i], v, w, p, q)
     
-    return res * dk / (2 * np.pi)
+    return np.round(res * dk / (2 * np.pi), rounding_place)
+
 
 
