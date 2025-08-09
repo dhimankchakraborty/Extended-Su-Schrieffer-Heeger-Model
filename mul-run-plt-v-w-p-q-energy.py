@@ -14,7 +14,7 @@ total_sites = 2 * N
 
 v_start = 0
 v_end = 2
-v_count = 101
+v_count = 1001
 v_arr = np.round(np.linspace(v_start, v_end, v_count), 4)
 
 
@@ -58,7 +58,7 @@ q = 1
 
 w_start = 0
 w_end = 2
-w_count = 101
+w_count = 1001
 w_arr = np.round(np.linspace(w_start, w_end, w_count), 4)
 
 
@@ -101,7 +101,7 @@ q = 1
 
 p_start = 0
 p_end = 2
-p_count = 101
+p_count = 1001
 p_arr = np.round(np.linspace(p_start, p_end, p_count), 4)
 
 
@@ -145,7 +145,7 @@ p = 1
 
 q_start = 0
 q_end = 2
-q_count = 101
+q_count = 1001
 q_arr = np.round(np.linspace(q_start, q_end, q_count), 4)
 
 
