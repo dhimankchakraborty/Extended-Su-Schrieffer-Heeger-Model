@@ -71,7 +71,7 @@ def d_x(k, v, w, p, q):
 
 @njit
 def d_y(k, w, p, q):
-    return w * np.sin(k) + p * np.sin(k) + q * np.sin(2 * k)
+    return w * np.sin(k) - p * np.sin(k) + q * np.sin(2 * k)
 
 
 
